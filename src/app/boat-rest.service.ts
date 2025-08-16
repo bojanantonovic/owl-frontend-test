@@ -12,7 +12,10 @@ export class BoatRestService {
 
   public getAllBoats(boatsSignal: WritableSignal<Boat[]>): void {
     this.http.get<Boat[]>(this.baseUrl).subscribe({
-      next: (boats) => boatsSignal.set(boats),
+      next: (boats) => {
+        boatsSignal.set(boats);
+        console.log("getAllBoats: received " + boatsSignal().length + " boats from backend ");
+      },
       error: (err: HttpErrorResponse) => {
         this.logHttpErrorResponseToConsole(err)
       }
@@ -20,11 +23,19 @@ export class BoatRestService {
   }
 
   public postBoat(newBoat: Boat): void {
+    console.log("boat to save: " + JSON.stringify(newBoat));
     this.http.post<Boat>(this.baseUrl, newBoat).subscribe({
-      next: (saved) => console.log('Boat saved:', saved),
+      next: (savedBoat) => console.log('Boat saved: ', JSON.stringify(savedBoat)),
       error: (err: HttpErrorResponse) => {
         this.logHttpErrorResponseToConsole(err)
       }
+    });
+  }
+
+  public deleteBoat(id: number): void {
+    this.http.delete<Boat>(`${this.baseUrl}/${id}`).subscribe({
+      next: (deletedBoat) => console.log('Boat deleted: ', id),
+      error: (err: HttpErrorResponse) => this.logHttpErrorResponseToConsole(err)
     });
   }
 

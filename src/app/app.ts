@@ -9,28 +9,24 @@ import {BoatRestService} from './boat-rest.service'; // 👈 here
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-//@Injectable({providedIn: 'root'})
 export class App implements OnInit {
-
-  //private readonly baseUrl = 'http://localhost:8080/boats';
-
-  constructor(/*private http: HttpClient, */private boatRestService: BoatRestService) {
+  constructor(private boatRestService: BoatRestService) {
 
   }
 
   ngOnInit(): void {
-    // Fetch initial boats from the backend
     this.boatRestService.getAllBoats(this.boats)
+    console.log("boats after initialisation: " + JSON.stringify(this.boats()));
   }
 
 
 // login properties
   isLoggedIn = signal(false);
   credentialsInvalid = signal(false);
-  //name = model('');
-  //password = model('');
   name = '';
   password = '';
+
+  // some valid credentials for testing
   validCredentials: string[][] = [['Donald', 'Duck'], ['Mickey', 'Mouse']];
 
   userName: WritableSignal<String> = signal('');
@@ -39,9 +35,6 @@ export class App implements OnInit {
   newBoatDescription = '';
 
   onSubmit() {
-    //this.isLoggedIn.set(true);
-    //this.userName.set(this.name());
-    //   if (this.validCredentials.includes([this.name, this.password])) {
     if (this.validCredentials.some(
       credentials => credentials[0] === this.name && credentials[1] === this.password)) {
       this.isLoggedIn.set(true);
@@ -52,21 +45,26 @@ export class App implements OnInit {
     }
   }
 
+  reloadBoats() {
+    this.boatRestService.getAllBoats(this.boats);
+  }
+
   addBoat() {
     if (this.newBoatName && this.newBoatDescription) {
       const newBoat: Boat = {
+        id: 0, // here not relevant, as the backend will assign it
         name: this.newBoatName,
         description: this.newBoatDescription
       };
-      //this.boats.update(boats => [...boats, newBoat]);
       this.boatRestService.postBoat(newBoat);
       this.boatRestService.getAllBoats(this.boats); // reload the list of boats
       // Reset the input fields
       this.newBoatName = '';
       this.newBoatDescription = '';
     }
-  }
 
+    console.log("boats after adding a new boat: " + JSON.stringify(this.boats()));
+  }
 
   updateBoat(index: number) {
     /*this.boats.update(boats => {
@@ -80,10 +78,15 @@ export class App implements OnInit {
   }
 
   deleteBoat(index: number) {
-    this.boats.update(boats => {
-      const updatedBoats = [...boats];
-      updatedBoats.splice(index, 1);
-      return updatedBoats;
-    });
+    console.log(this.boats().length + " boats bevor deletion");
+    /*this.boats.update(boats => {
+       const updatedBoats = [...boats];
+       updatedBoats.splice(index, 1);
+       return updatedBoats;
+     });*/
+    console.log(this.boats().length + " boats after internal deletion");
+    this.boatRestService.deleteBoat(index);
+    //this.boatRestService.getAllBoats(this.boats); // reload the list of boats
+    console.log(this.boats().length + " boats after deletion");
   }
 }
