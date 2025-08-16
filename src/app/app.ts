@@ -1,7 +1,7 @@
-import {Component, Injectable, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Boat} from './Boat' // 👈 here
-import {HttpClient} from '@angular/common/http';
+import {BoatRestService} from './boat-rest.service'; // 👈 here
 
 @Component({
   selector: 'app',
@@ -9,31 +9,22 @@ import {HttpClient} from '@angular/common/http';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-@Injectable({providedIn: 'root'})
+//@Injectable({providedIn: 'root'})
 export class App implements OnInit {
 
-  private readonly baseUrl = 'http://localhost:8080/boats';
+  //private readonly baseUrl = 'http://localhost:8080/boats';
 
-  constructor(private http: HttpClient) {
+  constructor(/*private http: HttpClient, */private boatRestService: BoatRestService) {
+
   }
 
   ngOnInit(): void {
     // Fetch initial boats from the backend
-    this.http.get<Boat[]>(this.baseUrl).subscribe({
-      next: (boats) => {
-        this.boats.set(boats);
-      },
-      error: (err) => {
-        console.error('Status:', err.status);         // z. B. 404
-        console.error('StatusText:', err.statusText); // z. B. Not Found
-        console.error('URL:', err.url);               // z. B. http://localhost:8080/boats
-        console.error('Message:', err.message);       // z. B. Http failure response ...
-        console.error('Error body:', err.error);      // JSON oder Text vom Backend
-      }
-    });
+    this.boatRestService.getAllBoats(this.boats)
   }
 
-  // login properties
+
+// login properties
   isLoggedIn = signal(false);
   credentialsInvalid = signal(false);
   //name = model('');
@@ -67,24 +58,15 @@ export class App implements OnInit {
         name: this.newBoatName,
         description: this.newBoatDescription
       };
-      this.boats.update(boats => [...boats, newBoat]);
-      this.http.post<Boat>(this.baseUrl, newBoat).subscribe({
-        next: saved => {
-          console.log('Boat saved:', saved);
-        },
-        error: (err) => {
-          console.error('Status:', err.status);         // z. B. 404
-          console.error('StatusText:', err.statusText); // z. B. Not Found
-          console.error('URL:', err.url);               // z. B. http://localhost:8080/boats
-          console.error('Message:', err.message);       // z. B. Http failure response ...
-          console.error('Error body:', err.error);      // JSON oder Text vom Backend
-        }
-      });
+      //this.boats.update(boats => [...boats, newBoat]);
+      this.boatRestService.postBoat(newBoat);
+      this.boatRestService.getAllBoats(this.boats); // reload the list of boats
       // Reset the input fields
       this.newBoatName = '';
       this.newBoatDescription = '';
     }
   }
+
 
   updateBoat(index: number) {
     /*this.boats.update(boats => {
