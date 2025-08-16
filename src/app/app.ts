@@ -48,4 +48,13 @@ export class App {
       this.newBoatDescription = '';
     }
   }
+
+  deleteBoat(index: number) {
+    this.boats.update(boats => {
+      const updatedBoats = [...boats];
+      updatedBoats.splice(index, 1);
+      return updatedBoats;
+    });
+
+  }
 }
