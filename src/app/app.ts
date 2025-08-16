@@ -1,6 +1,7 @@
-import {Component, signal, WritableSignal} from '@angular/core';
+import {Component, Injectable, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Boat} from './Boat' // 👈 here
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app',
@@ -8,7 +9,14 @@ import {Boat} from './Boat' // 👈 here
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+@Injectable({providedIn: 'root'})
 export class App {
+
+  private readonly baseUrl = 'http://localhost:8080/boats';
+
+  constructor(private http: HttpClient) {
+  }
+
   // login properties
   isLoggedIn = signal(false);
   credentialsInvalid = signal(false);
@@ -44,9 +52,33 @@ export class App {
         description: this.newBoatDescription
       };
       this.boats.update(boats => [...boats, newBoat]);
+      this.http.post<Boat>(this.baseUrl, newBoat).subscribe({
+        next: saved => {
+          console.log('Boat saved:', saved);
+        },
+        error: (err) => {
+          console.error('Status:', err.status);         // z. B. 404
+          console.error('StatusText:', err.statusText); // z. B. Not Found
+          console.error('URL:', err.url);               // z. B. http://localhost:8080/boats
+          console.error('Message:', err.message);       // z. B. Http failure response ...
+          console.error('Error body:', err.error);      // JSON oder Text vom Backend
+        }
+      });
+      // Reset the input fields
       this.newBoatName = '';
       this.newBoatDescription = '';
     }
+  }
+
+  updateBoat(index: number) {
+    /*this.boats.update(boats => {
+      const updatedBoats = [...boats];
+      if (updatedBoats[index]) {
+        updatedBoats[index].name = name;
+        updatedBoats[index].description = description;
+      }
+      return updatedBoats;
+    });*/
   }
 
   deleteBoat(index: number) {
@@ -55,6 +87,5 @@ export class App {
       updatedBoats.splice(index, 1);
       return updatedBoats;
     });
-
   }
 }
