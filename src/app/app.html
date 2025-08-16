@@ -42,5 +42,28 @@
   </form>
 } @else {
   <p>Welcome back, {{ userName() }}!</p>
+  <p>You have {{ boats().length }} boats:</p>
+  <ul>
+    @for (boat of boats(); track boat) {
+      <li>{{ boat.name }}: {{ boat.description }}</li>
+    }
+  </ul>
+  <form (ngSubmit)="addBoat()">
+    <p style="font-weight: bold; color: blue">
+    <table style="font-weight: bold">
+      <caption>Add a new boat</caption>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" name="newBoatName" [(ngModel)]="newBoatName"/></td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td><input type="text" name="newBoatDescription" [(ngModel)]="newBoatDescription"/></td>
+      </tr>
+    </table>
+    <p>
+      <button>Add Boat</button>
+    </p>
+  </form>
 }
 

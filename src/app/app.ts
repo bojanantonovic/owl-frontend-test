@@ -1,5 +1,6 @@
-import {Component, signal} from '@angular/core';
-import {FormsModule} from '@angular/forms'; // 👈 here
+import {Component, signal, WritableSignal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Boat} from './Boat' // 👈 here
 
 @Component({
   selector: 'app',
@@ -17,7 +18,10 @@ export class App {
   password = '';
   validCredentials: string[][] = [['Donald', 'Duck'], ['Mickey', 'Mouse']];
 
-  userName = signal('');
+  userName: WritableSignal<String> = signal('');
+  boats: WritableSignal<Boat[]> = signal([]);
+  newBoatName: string = '';
+  newBoatDescription = '';
 
   onSubmit() {
     //this.isLoggedIn.set(true);
@@ -30,6 +34,18 @@ export class App {
       this.credentialsInvalid.set(false);
     } else {
       this.credentialsInvalid.set(true);
+    }
+  }
+
+  addBoat() {
+    if (this.newBoatName && this.newBoatDescription) {
+      const newBoat: Boat = {
+        name: this.newBoatName,
+        description: this.newBoatDescription
+      };
+      this.boats.update(boats => [...boats, newBoat]);
+      this.newBoatName = '';
+      this.newBoatDescription = '';
     }
   }
 }
