@@ -19,7 +19,7 @@
         <button [routerLink]="['/boat-detail', boat.id]">Details</button>
       </td>
       <td>
-        <button (click)="updateBoat(boat.id)" style="background-color: yellow">Update boat</button>
+        <button [routerLink]="['/boat-update', boat.id]">Update boat</button>
       </td>
       <td>
         <button (click)="deleteBoat(boat.id)" style="background-color: red">Delete boat</button>

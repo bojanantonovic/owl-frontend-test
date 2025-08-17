@@ -40,11 +40,6 @@ export class BoatsScreen implements OnInit {
 
   deleteBoat(index: number) {
     console.log(this.boats().length + " boats bevor deletion");
-    /*this.boats.update(boats => {
-       const updatedBoats = [...boats];
-       updatedBoats.splice(index, 1);
-       return updatedBoats;
-     });*/
     console.log(this.boats().length + " boats after internal deletion");
     this.boatRestService.deleteBoat(index);
     //this.boatRestService.getAllBoats(this.boats); // reload the list of boats

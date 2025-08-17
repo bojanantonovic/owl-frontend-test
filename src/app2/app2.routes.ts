@@ -4,6 +4,7 @@ import {BoatsScreen} from '../app/boats-screen/boats-screen'
 import {authGuard} from '../shared/authGuard'
 import {AddBoatScreen} from '../app/add-boat-screen/add-boat-screen'
 import {BoatDetailScreen} from '../app/boat-detail-screen/boat-detail-screen'
+import {BoatUpdateScreen} from '../app/boat-update-screen/boat-update-screen'
 
 export const routes: Routes = [
   /*{
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path: 'boat-detail/:id',
     component: BoatDetailScreen,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'boat-update/:id',
+    component: BoatUpdateScreen,
     canActivate: [authGuard]
   }
 ];

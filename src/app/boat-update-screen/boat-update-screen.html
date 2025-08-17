@@ -1,0 +1,33 @@
+<table style="font-weight: bold; color: blue">
+  <caption>Boat details</caption>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    @if (boat()) {
+      <td>{{ boat()?.id }}</td>
+      <td>{{ boat()?.name }}</td>
+      <td>{{ boat()?.description }}</td>
+    }
+  </tr>
+</table>
+<hr>
+<form (ngSubmit)="updateBoat()">
+  <p style="font-weight: bold; color: blue">
+  <table style="font-weight: bold">
+    <caption>Add a new boat</caption>
+    <tr>
+      <td>Name</td>
+      <td><!--<input type="text" name="newBoatName" [(ngModel)]="boat()?.name"/>--></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><!--<input type="text" name="newBoatDescription" [(ngModel)]="boat()?.description"/>--></td>
+    </tr>
+  </table>
+  <p>
+    <button style="background-color: greenyellow">Update Boat</button>
+  </p>
+</form>
