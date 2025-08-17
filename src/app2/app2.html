@@ -1,0 +1,12 @@
+<div style="font-weight: bold; color: darkgray">
+  <div>User is logged in: {{ loginService.isLoggedIn() }}</div>
+</div>
+<nav>
+  <button routerLink="/login">Login</button>
+  <button routerLink="/boats" [disabled]="!loginService.isLoggedIn()">Boats</button>
+  <button routerLink="/add-boat" [disabled]="!loginService.isLoggedIn()">Add boat</button>
+</nav>
+<main>
+  <router-outlet></router-outlet>
+</main>
+

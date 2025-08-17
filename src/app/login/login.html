@@ -1,0 +1,21 @@
+<p>Please log in to access your dashboard.</p>
+<form (ngSubmit)="onSubmit()">
+  <p>
+  <table style="font-weight: bold">
+    <caption>Please provide your credentials</caption>
+    <tr>
+      <td>Name</td>
+      <td><input type="text" name="name" [(ngModel)]="name"/></td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td><input type="password" name="password" [(ngModel)]="password"/></td>
+    </tr>
+  </table>
+  <p>
+    <button>Login</button>
+  </p>
+  @if (credentialsInvalid()) {
+    <p style="color: red; font-weight: bold">Invalid credentials, please try again.</p>
+  }
+</form>

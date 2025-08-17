@@ -1,0 +1,28 @@
+<p>Welcome back, {{ loginService.userName() }}!</p>
+<p>You have {{ boats().length }} boats:</p>
+<table style="font-weight: bold; color: blue">
+  <caption>Boats</caption>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Update</th>
+    <th>Delete</th>
+  </tr>
+  @for (boat of boats(); track boat) {
+    <tr>
+      <td>{{ boat.id }}</td>
+      <td>{{ boat.name }}</td>
+      <td>{{ boat.description }}</td>
+      <td>
+        <button (click)="updateBoat(boat.id)" style="background-color: yellow">Update boat</button>
+      </td>
+      <td>
+        <button (click)="deleteBoat(boat.id)" style="background-color: red">Delete boat</button>
+      </td>
+    </tr>
+  }
+</table>
+<p>
+  <button (click)="reloadBoats()" style="background-color: lightgray">reload boats (for debugging purpose)</button>
+</p>

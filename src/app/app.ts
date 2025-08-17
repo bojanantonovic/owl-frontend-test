@@ -1,6 +1,6 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Boat} from '../shared/Boat' // 👈 here
+import {Boat} from '../shared/boat' // 👈 here
 import {BoatRestService} from '../service/boat-rest.service';
 import {LoginService} from '../service/login.service' // 👈 here
 
@@ -11,9 +11,8 @@ import {LoginService} from '../service/login.service' // 👈 here
   styleUrl: './app.css'
 })
 export class App implements OnInit {
-  constructor(private loginService: LoginService, private boatRestService: BoatRestService) {
-
-  }
+  loginService: LoginService = inject(LoginService);
+  boatRestService: BoatRestService = inject(BoatRestService);
 
   ngOnInit(): void {
     this.boatRestService.getAllBoats(this.boats)

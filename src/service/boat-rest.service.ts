@@ -1,6 +1,6 @@
 import {Injectable, WritableSignal} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Boat} from '../shared/Boat';
+import {Boat} from '../shared/boat';
 
 @Injectable({providedIn: 'root'})
 export class BoatRestService {

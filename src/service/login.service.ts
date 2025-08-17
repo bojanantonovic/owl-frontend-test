@@ -1,8 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BoatCredential} from '../shared/BoatCredential'
+import {Injectable, signal, WritableSignal} from '@angular/core';
+import {BoatCredential} from '../shared/boat-credential'
 
 @Injectable({providedIn: 'root'})
 export class LoginService {
+
+  isLoggedIn: WritableSignal<boolean> = signal(false);
+  userName: WritableSignal<String> = signal('');
 
   // some valid credentials for testing
   private validCredentials: BoatCredential[] = [
