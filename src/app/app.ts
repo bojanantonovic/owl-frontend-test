@@ -1,7 +1,8 @@
 import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Boat} from './Boat' // 👈 here
-import {BoatRestService} from './boat-rest.service'; // 👈 here
+import {Boat} from '../shared/Boat' // 👈 here
+import {BoatRestService} from '../service/boat-rest.service';
+import {LoginService} from '../service/login.service' // 👈 here
 
 @Component({
   selector: 'app',
@@ -10,7 +11,7 @@ import {BoatRestService} from './boat-rest.service'; // 👈 here
   styleUrl: './app.css'
 })
 export class App implements OnInit {
-  constructor(private boatRestService: BoatRestService) {
+  constructor(private loginService: LoginService, private boatRestService: BoatRestService) {
 
   }
 
@@ -19,15 +20,11 @@ export class App implements OnInit {
     console.log("boats after initialisation: " + JSON.stringify(this.boats()));
   }
 
-
 // login properties
   isLoggedIn = signal(false);
   credentialsInvalid = signal(false);
   name = '';
   password = '';
-
-  // some valid credentials for testing
-  validCredentials: string[][] = [['Donald', 'Duck'], ['Mickey', 'Mouse']];
 
   userName: WritableSignal<String> = signal('');
   boats: WritableSignal<Boat[]> = signal([]);
@@ -35,8 +32,7 @@ export class App implements OnInit {
   newBoatDescription = '';
 
   onSubmit() {
-    if (this.validCredentials.some(
-      credentials => credentials[0] === this.name && credentials[1] === this.password)) {
+    if (this.loginService.areCredentialsValid(this.name, this.password)) {
       this.isLoggedIn.set(true);
       this.userName.set(this.name);
       this.credentialsInvalid.set(false);
