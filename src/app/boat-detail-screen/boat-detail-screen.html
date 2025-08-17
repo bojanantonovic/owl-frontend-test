@@ -1,0 +1,15 @@
+<table style="font-weight: bold; color: blue">
+  <caption>Boats</caption>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    @if (boat()) {
+      <td>{{ boat()?.id }}</td>
+      <td>{{ boat()?.name }}</td>
+      <td>{{ boat()?.description }}</td>
+    }
+  </tr>
+</table>

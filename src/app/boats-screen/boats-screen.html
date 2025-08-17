@@ -6,6 +6,7 @@
     <th>Id</th>
     <th>Name</th>
     <th>Description</th>
+    <th>Details</th>
     <th>Update</th>
     <th>Delete</th>
   </tr>
@@ -14,6 +15,9 @@
       <td>{{ boat.id }}</td>
       <td>{{ boat.name }}</td>
       <td>{{ boat.description }}</td>
+      <td>
+        <button [routerLink]="['/boat-detail', boat.id]">Details</button>
+      </td>
       <td>
         <button (click)="updateBoat(boat.id)" style="background-color: yellow">Update boat</button>
       </td>

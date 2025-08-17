@@ -2,10 +2,13 @@ import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {Boat} from '../../shared/boat'
 import {BoatRestService} from '../../service/boat-rest.service'
 import {LoginService} from '../../service/login.service'
+import {RouterLink} from '@angular/router'
 
 @Component({
   selector: 'app-boats-screen',
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './boats-screen.html',
   styleUrl: './boats-screen.css'
 })
@@ -13,12 +16,12 @@ export class BoatsScreen implements OnInit {
   boatRestService: BoatRestService = inject(BoatRestService);
   loginService: LoginService = inject(LoginService);
 
+  boats: WritableSignal<Boat[]> = signal([]);
+
   ngOnInit(): void {
     this.boatRestService.getAllBoats(this.boats)
     console.log("boats after initialisation: " + JSON.stringify(this.boats()));
   }
-
-  boats: WritableSignal<Boat[]> = signal([]);
 
   reloadBoats() {
     this.boatRestService.getAllBoats(this.boats);
