@@ -22,7 +22,6 @@ export class BoatUpdateScreen implements OnInit {
   boatId: string | null = null;
   boats = signal<Boat[]>([]);
 
-
   boat = computed(() => {
     const id = this.boatId ? Number(this.boatId) : null;
     const foundBoat = id == null ? null : this.boats().find(b => b.id === id) ?? null
@@ -45,7 +44,7 @@ export class BoatUpdateScreen implements OnInit {
 
   updateBoat() {
     const currentBoat = this.boat()
-    console.log("boat to update: " + JSON.stringify(currentBoat));
+    console.log("boat to update in screen: " + JSON.stringify(currentBoat));
     if (this.newBoatName && this.newBoatDescription) {
       const newBoat: Boat = {
         id: currentBoat ? currentBoat.id : 0,
@@ -53,7 +52,6 @@ export class BoatUpdateScreen implements OnInit {
         description: this.newBoatDescription
       };
       this.boatRestService.updateBoat(newBoat);
-      // Reset the input fields
       this.newBoatName = '';
       this.newBoatDescription = '';
     }
