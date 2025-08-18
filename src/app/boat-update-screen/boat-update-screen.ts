@@ -25,7 +25,12 @@ export class BoatUpdateScreen implements OnInit {
 
   boat = computed(() => {
     const id = this.boatId ? Number(this.boatId) : null;
-    return id == null ? null : this.boats().find(b => b.id === id) ?? null;
+    const foundBoat = id == null ? null : this.boats().find(b => b.id === id) ?? null
+    if (foundBoat) {
+      this.newBoatName = foundBoat.name;
+      this.newBoatDescription = foundBoat.description;
+    }
+    return foundBoat;
   });
 
   ngOnInit() {
@@ -39,18 +44,19 @@ export class BoatUpdateScreen implements OnInit {
   }
 
   updateBoat() {
-    console.log("boat to update: " + JSON.stringify(this.boat()));
-    /*  if (this.newBoatName && this.newBoatDescription) {
-        const newBoat: Boat = {
-          id: 0, // here not relevant, as the backend will assign it
-          name: this.newBoatName,
-          description: this.newBoatDescription
-        };
-        // this.boatRestService.updateBoat(newBoat);
-        // Reset the input fields
-        this.newBoatName = '';
-        this.newBoatDescription = '';
-      }*/
+    const currentBoat = this.boat()
+    console.log("boat to update: " + JSON.stringify(currentBoat));
+    if (this.newBoatName && this.newBoatDescription) {
+      const newBoat: Boat = {
+        id: currentBoat ? currentBoat.id : 0,
+        name: this.newBoatName,
+        description: this.newBoatDescription
+      };
+      this.boatRestService.updateBoat(newBoat);
+      // Reset the input fields
+      this.newBoatName = '';
+      this.newBoatDescription = '';
+    }
 
     this.router.navigate(['/boats']);
   }
