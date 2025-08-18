@@ -1,78 +1,12 @@
-<!--<div style="font-weight: bold; color: darkgray">
-  <div>User is logged in: {{ isLoggedIn() }}</div>
-  <div>Credentials invalid: {{ credentialsInvalid() }}</div>
-</div>-->
-
-@if (!isLoggedIn()) {
-  <p>Please log in to access your dashboard.</p>
-  <form (ngSubmit)="onSubmit()">
-    <p>
-    <table style="font-weight: bold">
-      <caption>Please provide your credentials</caption>
-      <tr>
-        <td>Name</td>
-        <td><input type="text" name="name" [(ngModel)]="name"/></td>
-      </tr>
-      <tr>
-        <td>Password</td>
-        <td><input type="password" name="password" [(ngModel)]="password"/></td>
-      </tr>
-    </table>
-    <p>
-      <button>Login</button>
-    </p>
-    @if (credentialsInvalid()) {
-      <p style="color: red; font-weight: bold">Invalid credentials, please try again.</p>
-    }
-  </form>
-} @else {
-  <p>Welcome back, {{ userName() }}!</p>
-  <p>You have {{ boats().length }} boats:</p>
-  <table style="font-weight: bold; color: blue">
-    <caption>Boats</caption>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Update</th>
-      <th>Delete</th>
-    </tr>
-    @for (boat of boats(); track boat) {
-      <tr>
-        <td>{{ boat.id }}</td>
-        <td>{{ boat.name }}</td>
-        <td>{{ boat.description }}</td>
-        <!--        <td><input type="text" name="{newBoatName+i}" [(ngModel)]="boat.name"/></td>
-                <td><input type="text" name="{newBoatDescription+i}" [(ngModel)]="boat.description"/></td>-->
-        <td>
-          <button (click)="updateBoat(boat.id)" style="background-color: yellow">Update boat</button>
-        </td>
-        <td>
-          <button (click)="deleteBoat(boat.id)" style="background-color: red">Delete boat</button>
-        </td>
-      </tr>
-    }
-  </table>
-  <hr>
-  <form (ngSubmit)="addBoat()">
-    <p style="font-weight: bold; color: blue">
-    <table style="font-weight: bold">
-      <caption>Add a new boat</caption>
-      <tr>
-        <td>Name</td>
-        <td><input type="text" name="newBoatName" [(ngModel)]="newBoatName"/></td>
-      </tr>
-      <tr>
-        <td>Description</td>
-        <td><input type="text" name="newBoatDescription" [(ngModel)]="newBoatDescription"/></td>
-      </tr>
-    </table>
-    <p>
-      <button style="background-color: greenyellow">Add Boat</button>
-    </p>
-  </form>
-  <p>
-    <button (click)="reloadBoats()" style="background-color: lightgray">reload boats (for debugging purpose)</button>
-  </p>
-}
+<div style="font-weight: bold; color: darkgray">
+  <div>User is logged in: {{ loginService.isLoggedIn() }}</div>
+</div>
+<nav>
+  <button routerLink="/login">Login</button>
+  <button routerLink="/boats" [disabled]="!loginService.isLoggedIn()">Boats</button>
+  <button routerLink="/add-boat" [disabled]="!loginService.isLoggedIn()">Add boat</button>
+</nav>
+<main>
+  <router-outlet></router-outlet>
+</main>
 
